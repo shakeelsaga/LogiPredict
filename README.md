@@ -1,45 +1,86 @@
-# LogiPredict: My Smart Logistics Analyzer
+# LogiPredict
 
-This project is my attempt to build a smart system that can take messy logistics data, make sense of it, and even predict how long shipments will take. I'm using machine learning to power this, and it's been a great way to apply my skills to a real-world problem.
+LogiPredict is a full-stack web application that predicts shipment transit times based on historical routing data. It combines a Machine Learning prediction engine with a RESTful backend and a custom frontend interface.
 
-## What I'm Trying to Do
+## Overview
 
-I wanted to see if I could build something that would:
+*   **Predictive Engine:** Uses a trained Random Forest Regressor to estimate delivery windows.
+*   **API-First Architecture:** The backend serves JSON data, decoupling the logic from the UI.
+*   **Persistent Auditing:** Logs every estimation request to a database using SQLAlchemy.
+*   **Environment Agnostic:** Falls back to a local SQLite database if a cloud PostgreSQL URL is not provided.
+*   **Custom UI:** A zero-dependency frontend built with Vanilla JS, CSS, and the Fetch API.
 
-*   **Tidy up messy data:** Logistics data can be a real headache, with lots of nested JSON and inconsistent formats. I've written scripts to clean and organize it automatically.
-*   **Find useful insights:** I'm calculating key metrics like average transit time and shipment velocity to understand performance.
-*   **Predict the future:** The core of this project is a machine learning model that can predict shipment transit times based on factors like origin, destination, and weight.
+## Tech Stack
 
-## How I Built It
+*   **Backend:** Python, Flask, Flask-SQLAlchemy, Flask-Marshmallow
+*   **Machine Learning:** Scikit-Learn, Pandas, Joblib
+*   **Frontend:** HTML5, CSS3, Vanilla JavaScript
+*   **Server:** Gunicorn
 
-I used a few key technologies to put this all together:
+## Running the Application Locally
 
-*   **Python:** The whole project is built in Python.
-*   **Flask:** I used Flask to create a simple API that I can use to interact with my analytics and prediction models.
-*   **Pandas:** Pandas is my go-to for data manipulation. It's been essential for cleaning and preparing the data for my model.
-*   **Scikit-Learn:** This is what I'm using for the machine learning side of things. I've trained a Random Forest Regressor to make the predictions.
-*   **Joblib:** I'm using Joblib to save my trained model so I can easily use it in my application.
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/shakeelsaga/LogiPredict.git
+    cd LogiPredict
+    ```
 
-## How to Get It Running
+2.  **Create and activate a virtual environment:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate
+    ```
+    *On Windows, use `venv\Scripts\activate`*
 
-Here are the steps to get this project up and running on your own machine:
-
-1.  **Install the dependencies:**
+3.  **Install the dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
-2.  **Train the model:**
-    ```bash
-    python model_train.py
+
+4.  **Configure your environment variables:**
+    Create a `.env` file in the root directory and add a secret key:
     ```
-3.  **Run the server:**
-    ```bash
-    python app.py
+    SECRET_KEY=your_generated_secret_key_here
     ```
+    *Leave `DATABASE_URL` blank to default to local SQLite.*
 
-## How to Use the API
+5.  **Run the server:**
+    ```bash
+    python run.py
+    ```
+    The application will be available at `http://127.0.0.1:5000`.
 
-I've set up a couple of API endpoints to interact with my system:
+## Using the API
 
-*   `POST /analyze`: Send a POST request with your raw JSON data to this endpoint, and it will return a summary of the performance metrics.
-*   `POST /predict`: Send a POST request with the shipment details (origin, destination, and weight), and it will return a prediction for the delivery time.
+The backend exposes a RESTful endpoint for transit time calculation.
+
+### POST /api/predict
+
+Calculates the estimated transit time and logs the request to the database.
+
+**Request Body (JSON):**
+```json
+{
+  "origin": "DELHI",
+  "destination": "CHENNAI",
+  "weight": 5.3,
+  "service": "FEDEX_EXPRESS_SAVER"
+}
+```
+
+**Success Response (200 OK):**
+```json
+{
+  "id": 1,
+  "created_at": "2026-03-06T15:10:31.440476",
+  "origin_city": "DELHI",
+  "destination_city": "CHENNAI",
+  "weight_kg": 5.3,
+  "service_type": "FEDEX_EXPRESS_SAVER",
+  "predicted_hours": 12.88
+}
+```
+
+## License
+
+This project is licensed under the MIT License.

@@ -6,7 +6,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 import joblib
-import logistics_analysis
+import app.ml.logistics_analysis as logistics_analysis
 
 # 1. I'm loading my dataset here. I'm using the dummy dataset for now.
 with open("dummy_dataset.json", "r", encoding="utf-8") as f:
