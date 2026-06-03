@@ -43,7 +43,7 @@ def predict_delivery():
 
         # 3. Now I can get the prediction.
         prediction = model.predict(input_data)[0]
-        estimated_hours = round(prediction, 2)
+        estimated_hours = float(round(prediction, 2))
 
         # 4. This is new: I'm saving the prediction to my database.
         new_log = PredictionLog(

@@ -1,0 +1,29 @@
+services:
+  web:
+    image: shakeelsaga/logipredict:v1.0.0
+    ports:
+      - "8080:5000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=logi_user
+      - POSTGRES_PASSWORD=logi_pass
+      - POSTGRES_DB=logipredict_db
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U logi_user -d logipredict_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pg_data:
