@@ -20,24 +20,39 @@ The recommended workflow to launch LogiPredict is via multi-container orchestrat
 
 ### Execution Steps
 1. **Clone the repository:**
-   ```bash
+```bash
    git clone [https://github.com/shakeelsaga/LogiPredict.git](https://github.com/shakeelsaga/LogiPredict.git)
    cd LogiPredict
-   ```
+```
 
 2. **Configure Environment Variables:**
-   Create a `.env` file in the root directory to define runtime configurations. Keep this file excluded from version control:
+   Copy the provided template and fill it in. Keep the resulting `.env` excluded from version control:
 
-   ```env
-   SECRET_KEY=your_secure_session_encryption_key
+```bash
+   cp .env.example .env
+```
+
+```env
+   SECRET_KEY=
    DATABASE_URL=postgresql://logi_user:logi_pass@db:5432/logipredict_db
-   ```
+   PORT=8080
+   POSTGRES_USER=logi_user
+   POSTGRES_PASSWORD=logi_pass
+   POSTGRES_DB=logipredict_db
+```
+
+   Generate a real `SECRET_KEY` rather than leaving it blank:
+```bash
+   python -c "import secrets; print(secrets.token_hex(32))"
+```
+
+   If you change `POSTGRES_USER`, `POSTGRES_PASSWORD`, or `POSTGRES_DB` from their defaults, update the credentials embedded in `DATABASE_URL` to match — the two are read independently, so they won't stay in sync automatically.
 
 3. **Orchestrate and Boot the Stack:**
-   ```bash
+```bash
    docker compose up --build
-   ```
-   The orchestration layer will verify database health and initialize the web workers. The interface will immediately become available on the host machine at `http://localhost:8080`.
+```
+   The orchestration layer will verify database health and initialize the web workers. The interface will become available on the host machine at `http://localhost:8080`, or whatever value you set for `PORT` in `.env`.
 
 ---
 
@@ -87,27 +102,27 @@ Follow this approach if you are a contributor who needs to train the core machin
 ### Execution Steps
 
 1. **Initialize a local virtual environment:**
-   ```bash
+```bash
    python -m venv venv
    source venv/bin/activate  # On Windows use: venv\Scripts\activate
-   ```
+```
 
 2. **Install project requirements:**
-   ```bash
+```bash
    pip install -r requirements.txt
-   ```
+```
 
 3. **Train the Predictive Model:**
    To parse raw tracking logs (`dummy_dataset.json`) and serialize a new preprocessing pipeline binary (`model.pkl`), run:
-   ```bash
+```bash
    python model_train.py
-   ```
+```
 
 4. **Boot Development Web Server:**
    Ensure a `.env` configuration file exists in your workspace root. Leaving the `DATABASE_URL` line entirely blank forces the engine to automatically build and fallback onto a local SQLite database file instance inside the development scope:
-   ```bash
+```bash
    python run.py
-   ```
+```
    The development server will mount locally on `http://127.0.0.1:5000`.
 
 ---
