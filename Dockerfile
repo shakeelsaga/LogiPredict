@@ -34,6 +34,7 @@ COPY --from=builder /opt/venv /opt/venv
 COPY --chown=logiuser:logigroup . .
 
 USER logiuser
+# Default port for local/no-config runs. Actual port is controlled by $PORT at runtime.
 EXPOSE 5000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--preload", "run:app"]
+CMD ["sh", "-c", "exec gunicorn --bind 0.0.0.0:${PORT:-5000} --workers 2 --preload --no-control-socket run:app"]
