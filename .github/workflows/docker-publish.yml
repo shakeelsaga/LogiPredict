@@ -3,6 +3,17 @@ name: Build and Publish Multi-Arch Image
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**.md'
+      - '.env.example'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'deploy.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build-and-push:
@@ -23,6 +34,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read version
+        id: version
+        run: |
+          if [ ! -s VERSION ]; then
+            echo "::error::VERSION file is missing or empty"
+            exit 1
+          fi
+          echo "value=v$(tr -d '[:space:]' < VERSION)" >> "$GITHUB_OUTPUT"
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -32,3 +59,7 @@ jobs:
           tags: |
             shakeelsaga/logipredict:latest
             shakeelsaga/logipredict:${{ github.sha }}
+            shakeelsaga/logipredict:${{ steps.version.outputs.value }}
+            ghcr.io/shakeelsaga/logipredict:latest
+            ghcr.io/shakeelsaga/logipredict:${{ github.sha }}
+            ghcr.io/shakeelsaga/logipredict:${{ steps.version.outputs.value }}
