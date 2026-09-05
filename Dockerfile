@@ -20,6 +20,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 FROM python:3.11-slim AS runner
 
 LABEL org.opencontainers.image.description="A containerized Machine Learning API and web interface for predicting logistics transit times."
+LABEL org.opencontainers.image.source="https://github.com/shakeelsaga/LogiPredict"
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
