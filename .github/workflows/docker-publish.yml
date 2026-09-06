@@ -64,14 +64,6 @@ jobs:
             ghcr.io/shakeelsaga/logipredict:${{ github.sha }}
             ghcr.io/shakeelsaga/logipredict:${{ steps.version.outputs.value }}
 
-      - name: Sync Docker Hub description
-        uses: peter-evans/dockerhub-description@v5
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: shakeelsaga/logipredict
-          readme-filepath: ./DOCKER_README.md
-
       - name: Sync README version
         run: |
           CURRENT_VERSION="v$(tr -d '[:space:]' < VERSION)"
