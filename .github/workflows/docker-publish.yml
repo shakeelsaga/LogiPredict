@@ -63,3 +63,23 @@ jobs:
             ghcr.io/shakeelsaga/logipredict:latest
             ghcr.io/shakeelsaga/logipredict:${{ github.sha }}
             ghcr.io/shakeelsaga/logipredict:${{ steps.version.outputs.value }}
+
+      - name: Sync Docker Hub description
+        uses: peter-evans/dockerhub-description@v5
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: shakeelsaga/logipredict
+          readme-filepath: ./docker_readme.md
+
+      - name: Sync README version
+        run: |
+          CURRENT_VERSION="v$(tr -d '[:space:]' < VERSION)"
+          sed -i "s/\*\*Current release:\*\* \`v[0-9A-Za-z.-]*\`/**Current release:** \`${CURRENT_VERSION}\`/" README.md
+          if ! git diff --quiet README.md; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git commit -m "docs: sync README version to ${CURRENT_VERSION} [skip ci]"
+            git push
+          fi
