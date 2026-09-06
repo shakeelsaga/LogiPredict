@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: shakeelsaga/logipredict
-          readme-filepath: ./docker_readme.md
+          readme-filepath: ./DOCKER_README.md
 
       - name: Sync README version
         run: |
