@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: logipredict
+    runtime: image
+    plan: free 
+    image:
+      url: docker.io/shakeelsaga/logipredict:v1.1.4
+    envVars:
+      - key: FLASK_CONFIG
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false 
