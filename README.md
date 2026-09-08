@@ -1,5 +1,11 @@
 ![Version](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fraw.githubusercontent.com%2Fshakeelsaga%2FLogiPredict%2Fmain%2FVERSION&search=(.*)&label=version&color=blue)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-success?style=for-the-badge&logo=render)](https://logipredict-is1r.onrender.com)
 # LogiPredict
+
+### Link: [**Try the live demo →**](https://logipredict-is1r.onrender.com)
+*Deployed on Render + Neon Postgres. If it's been idle a while, the first load can take up to a minute to wake up and that is normal, not a bug.*
+
+![LogiPredict demo](assets/logipredict_demo.gif)
 
 LogiPredict is a full-stack web application and RESTful API designed to predict shipment transit times based on historical routing data. The architecture couples an immutable Machine Learning prediction engine with a decoupled Flask backend and a brutalist custom frontend interface.
 
