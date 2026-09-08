@@ -4,7 +4,7 @@ services:
     runtime: image
     plan: free 
     image:
-      url: docker.io/shakeelsaga/logipredict:v1.1.4
+      url: docker.io/shakeelsaga/logipredict:v1.1.5
     envVars:
       - key: FLASK_CONFIG
         value: production
