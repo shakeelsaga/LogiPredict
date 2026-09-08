@@ -22,6 +22,11 @@ class Config:
     # I'm turning off a SQLAlchemy feature that uses unnecessary memory.
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+        "pool_recycle": 280,
+    }
+
 class DevelopmentConfig(Config):
     DEBUG = True
 
