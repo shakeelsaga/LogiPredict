@@ -3,7 +3,7 @@
 
 LogiPredict is a full-stack web application and RESTful API designed to predict shipment transit times based on historical routing data. The architecture couples an immutable Machine Learning prediction engine with a decoupled Flask backend and a brutalist custom frontend interface.
 
-**Current release:** `v1.1.4`
+**Current release:** `v1.1.5`
 
 ## Primary Features
 
